@@ -6,6 +6,8 @@ abilities.
 
 Paper/Spigot 1.21.4, Java 21, no dependencies.
 
+### [⬇ Download the latest build](https://github.com/Omny-1/AquaPowers/releases/latest)
+
 ---
 
 ## The artifact
@@ -205,7 +207,8 @@ hit rather than doing the hitting, and Spring is how you hold a corridor.
 
 ## For server owners
 
-Install: drop the jar in `plugins/`, restart, then `/aqua give <player>`.
+Install: grab the jar from [Releases](https://github.com/Omny-1/AquaPowers/releases/latest), drop it
+in `plugins/`, restart, then `/aqua give <player>`.
 
 ```
 /aqua give [player]          give Holy Water
