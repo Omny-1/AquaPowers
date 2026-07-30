@@ -1,0 +1,8 @@
+# Keep line endings stable across contributors so diffs stay readable.
+* text=auto eol=lf
+
+*.jar binary
+*.png binary
+
+# The shell helper must stay LF or it will not run.
+*.sh text eol=lf

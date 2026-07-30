@@ -817,7 +817,7 @@ public final class UserManager {
 
         // Rebuilding the sidebar means a remove packet and an add packet per line, every second, for
         // every bender. Skip it entirely when nothing would look different.
-        String signature = String.join(" ", lines);
+        String signature = String.join("|", lines);
         boolean fresh = u.getBoard() == null;
         if (!fresh && signature.equals(u.getHudSignature())) return;
         u.setHudSignature(signature);
