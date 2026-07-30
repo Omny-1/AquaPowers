@@ -1,0 +1,22 @@
+name: AquaPowers
+version: '${project.version}'
+main: dev.bibo.aqua.AquaWaterPlugin
+api-version: '1.21'
+author: bibo
+description: Water-bending abilities granted by Holy Water — 23 abilities, stamina, environment attunement and an ultimate.
+website: https://github.com/bibo/AquaPowers
+folia-supported: false
+
+commands:
+  aqua:
+    description: AquaPowers control command.
+    usage: /aqua <give|catalyst|grant|revoke|on|off|awaken|forms|debug|reload>
+    aliases: [voda, water, aquapowers]
+
+permissions:
+  aquapowers.use:
+    description: Use water-bending abilities. Deny this to block the plugin for a player or world.
+    default: true
+  aquapowers.admin:
+    description: Administrative commands (give, grant, revoke, awaken, debug, reload).
+    default: op
