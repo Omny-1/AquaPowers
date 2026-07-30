@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * "Водный Барьер" — the kit's only real answer to being hit.
+ * "Water Barrier" — the kit's only real answer to being hit.
  *
  * <p>Every other ability points outward; this one is the reason a bender can stand in a fight instead
  * of kiting it. A shell of water orbits the caster and drinks incoming damage until its reservoir runs

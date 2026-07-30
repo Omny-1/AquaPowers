@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * "Живая Вода" — the half of water-bending that isn't a weapon.
+ * "Living Water" — the half of water-bending that isn't a weapon.
  *
  * <p>The orb unwinds into ribbons that wrap the caster and any allies in reach, mending them over
  * time, putting out fire, and washing off poison and wither. It is the only ability in the kit that

@@ -66,7 +66,7 @@ public final class LifecycleListener implements Listener {
     }
 
     /**
-     * One handler for every active Водный Барьер — the effect keeps a static registry, so N shields
+     * One handler for every active Water Barrier — the effect keeps a static registry, so N shields
      * cost one map lookup here rather than N registered listeners. Runs at HIGH so other plugins have
      * already had their say about the damage before the water drinks part of it.
      */

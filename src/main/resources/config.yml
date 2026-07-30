@@ -1,145 +1,145 @@
 # ============================================================
-#  AquaPowers — манипуляция водой (Святая Вода)
-#  Размер, урон и последствия атак масштабируются от количества
-#  набранной воды И от того, где ты стоишь (см. environment).
+#  AquaPowers — water manipulation (Holy Water)
+#  Attack size, damage, and aftermath scale with both the amount
+#  of collected water AND the caster's surroundings (see environment).
 # ============================================================
 
-# Версия конфига — не трогай. При обновлении плагина в файл ДОЛИВАЮТСЯ только
-# новые ключи, твои значения сохраняются (бэкап всё равно пишется рядом).
+# Configuration version — do not edit. Plugin updates only ADD new keys;
+# your existing values are preserved, and a backup is still written alongside the file.
 config-version: 7
 
 messages:
   prefix: "&b&l⊙ &b"
 
 collect:
-  radius: 16              # радиус поиска воды (блоков)
-  duration-ticks: 40      # длительность сбора шара (20 = 1 сек) -> 2 сек
-  # Максимум капель в шаре. Это главная ручка нагрузки: каждая капля — реальная
-  # сущность, которую сервер рассылает всем игрокам рядом. Пять бендеров в одном
-  # радиусе трекинга — это не 5 потоков пакетов, а 25.
+  radius: 16              # water search radius in blocks
+  duration-ticks: 40      # orb collection duration (20 = 1 second) -> 2 seconds
+  # Maximum droplets in an orb. This is the main load control: every droplet is
+  # a real entity broadcast by the server to every nearby player. Five benders
+  # inside the same tracking radius produce 25 packet streams, not 5.
   max-blocks: 120
-  min-blocks: 6           # минимум, иначе способность не активируется
-  drain-source: true      # убирать настоящую воду из мира при сборе
-  restore-source-on-disperse: true  # вернуть воду, если шар развеян без атаки
+  min-blocks: 6           # minimum required to activate an ability
+  drain-source: true      # remove real water from the world while collecting
+  restore-source-on-disperse: true  # restore water when the orb is dispersed without attacking
 
 orb:
-  # Палитра шара: "МАТЕРИАЛ:вес". Смесь оттенков + белая "пена" — именно это
-  # превращает кучу одинаковых кубов в массу воды.
-  # Заметь: стекло прозрачное, и много перекрывающихся прозрачных капель дают
-  # артефакты сортировки при вращении камеры. Если мерцает — попробуй
-  # непрозрачные материалы (PRISMARINE, PACKED_ICE), потеряв немного "воды".
-  # Контрастная палитра (тёмно-синий + белая пена) также лучше переживает
-  # сжатие видео, чем три близких оттенка голубого.
+  # Orb palette: "MATERIAL:weight". Mixed shades and white "foam" turn a pile
+  # of identical cubes into a body of water.
+  # Note: glass is transparent, and many overlapping transparent droplets can
+  # produce sorting artifacts while the camera rotates. If it flickers, try
+  # opaque materials such as PRISMARINE or PACKED_ICE, at the cost of some watery appearance.
+  # A high-contrast palette (dark blue plus white foam) also survives video
+  # compression better than three similar shades of light blue.
   palette:
     - "BLUE_STAINED_GLASS:7"
     - "LIGHT_BLUE_STAINED_GLASS:3"
     - "WHITE_STAINED_GLASS:2"
-  material: BLUE_STAINED_GLASS   # запасной вариант, если палитра пуста
-  block-scale: 0.6        # базовый размер капли (растёт с количеством воды)
-  size-jitter-min: 0.72   # разброс размера капель: без него видна "решётка"
+  material: BLUE_STAINED_GLASS   # fallback when the palette is empty
+  block-scale: 0.6        # base droplet size; grows with the amount of water
+  size-jitter-min: 0.72   # droplet size variation; without it, a visible grid appears
   size-jitter-max: 1.36
-  radius: 1.7             # базовый радиус шара (растёт с количеством воды)
-  height-above-head: 1.0  # зазор над головой (шар авто-поднимается с ростом размера)
+  radius: 1.7             # base orb radius; grows with the amount of water
+  height-above-head: 1.0  # gap above the head; the orb rises automatically as it grows
   spin-speed: 0.06
-  glow: false             # светящийся контур капель (эпично, но видно сквозь стены)
+  glow: false             # glowing droplet outline (dramatic, but visible through walls)
 
 display:
-  # Клиентское отсечение по дальности. 4.0 заставляло клиент РИСОВАТЬ всю воду
-  # со всех концов боя — далёкие игроки платили GPU за капли, которые всё равно
-  # не различают. 1.5 достаточно, чтобы видеть свою и чужую воду в бою.
+  # Client-side distance culling. A value of 4.0 made clients RENDER all water
+  # across the entire fight, wasting GPU time on droplets distant players could
+  # not distinguish anyway. 1.5 is enough to see your own and enemy water in combat.
   view-range: 1.5
-  teleport-duration: 2    # как часто шлём перемещение капли (тиков)
-  # 0..15 — фиксированная яркость. -1 = брать освещение оттуда, где вода реально
-  # находится: в пещере темнее, ночью темнее, на закате теплее.
+  teleport-duration: 2    # how often droplet movement is sent, in ticks
+  # 0..15 — fixed brightness. -1 uses lighting from the water's actual position:
+  # darker in caves and at night, warmer at sunset.
   brightness: -1
 
-# ---- Потолок нагрузки. Превышение = честный отказ с сообщением, а не тихие лаги ----
+# ---- Load limits. Exceeding them gives an explicit rejection message instead of silent lag ----
 limits:
-  max-effects: 90            # одновременно живых эффектов на сервер
+  max-effects: 90            # simultaneous live effects on the server
   max-effects-per-player: 14
-  max-displays: 1400         # одновременно живых капель-сущностей на сервер
-  restore-batch: 120         # блоков за тик при возврате заимствованного
+  max-displays: 1400         # simultaneous live droplet entities on the server
+  restore-batch: 120         # borrowed blocks restored per tick
 
-cooldown-ticks: 10        # задержка между применениями форм
+cooldown-ticks: 10        # delay between form activations
 
-# ---- Стамина: время набора полной (0->100) зависит от «стихии» вокруг ----
-# Сухо и жарко -> быстро копится, но каст дорогой и слабый.
-# Мокро -> копится медленно, но каст дешёвый и мощный. См. environment.
+# ---- Stamina: time to refill from 0 to 100 depends on the surrounding attunement ----
+# Dry and hot -> refills quickly, but casts are expensive and weak.
+# Wet -> refills slowly, but casts are cheap and powerful. See environment.
 stamina:
   max: 100.0
   scan-radius: 6
-  seconds-near-water: 30  # погружение / рядом много воды
-  seconds-on-ground: 15   # обычная земля
-  seconds-on-sand: 10     # песок / пустыня / саванна
-  seconds-near-lava: 5    # лава, огонь, Ад
+  seconds-near-water: 30  # submerged or near plenty of water
+  seconds-on-ground: 15   # ordinary ground
+  seconds-on-sand: 10     # sand, desert, or savanna
+  seconds-near-lava: 5    # lava, fire, or the Nether
 
-# ---- Стихия: окружение меняет стоимость И МОЩЬ способностей ----
-# Погружение ×0.55 стоимость / ×1.30 мощь | Ливень ×0.70 / ×1.18
-# Течение    ×0.80 / ×1.12 | Равновесие ×1.00 / ×1.00
-# Сушь       ×1.30 / ×0.90 (шар испаряется) | Пекло ×1.70 / ×0.78 (испаряется быстро)
-# Определяется по температуре биома и доступу к небу, не по названиям — работает
-# и с модовыми биомами. Биомы без осадков (саванна, бэдленды) Ливень не получают.
+# ---- Attunement: surroundings change both ability COST AND POWER ----
+# Immersion ×0.55 cost / ×1.30 power | Downpour ×0.70 / ×1.18
+# Flow      ×0.80 / ×1.12 | Balance ×1.00 / ×1.00
+# Drought   ×1.30 / ×0.90 (orb evaporates) | Inferno ×1.70 / ×0.78 (evaporates quickly)
+# Determined by biome temperature and sky access rather than biome names, so it
+# also works with modded biomes. Biomes without precipitation do not get Downpour.
 environment:
   enabled: true
-  sky-collection: true    # под дождём/под водой можно набрать шар без водоёма рядом
+  sky-collection: true    # collect an orb without a nearby water source in rain or underwater
 
-# ---- Авакенинг: копится от нанесённого урона, спадает в простое ----
+# ---- Awakening: builds from damage dealt and decays while idle ----
 awakening:
   enabled: true
-  threshold: 80.0         # сколько "заряда" нужно, чтобы войти в авакенинг
+  threshold: 80.0         # charge required to enter Awakening
   max: 100.0
-  charge-per-damage: 1.3  # заряд за единицу нанесённого урона
-  decay-per-sec: 3.0      # как быстро заряд спадает без урона
-  grace-ticks: 60         # сколько после удара заряд не спадает
-  cost-multiplier: 0.5    # множитель стоимости способностей в авакенинге
-  collect-speed-mult: 2.0 # во сколько раз быстрее собирается вода в авакенинге
-  # Множитель мощи. Влияет на урон, радиус, длительность и количество снарядов —
-  # раньше он молча не влиял ни на что при полном шаре.
+  charge-per-damage: 1.3  # charge gained per point of damage dealt
+  decay-per-sec: 3.0      # charge lost per second without dealing damage
+  grace-ticks: 60         # delay after a hit before charge starts decaying
+  cost-multiplier: 0.5    # ability cost multiplier during Awakening
+  collect-speed-mult: 2.0 # water collection speed multiplier during Awakening
+  # Power multiplier. Affects damage, radius, duration, and projectile count;
+  # it previously had no effect at all with a full orb.
   power-multiplier: 1.25
 
-# ---- Ультимейт "Аква-Армагеддон" (только в авакенинге, при полной стамине) ----
-# Взвод БЕСПЛАТЕН и обратим: если не сбросить, вся изъятая вода возвращается в мир.
+# ---- Ultimate "Aqua Armageddon" (Awakening only, requires full stamina) ----
+# Arming is FREE and reversible: if not released, all collected water returns to the world.
 nuke:
   enabled: true
-  radius: 60              # радиус сбора воды (только загруженные чанки)
-  cooldown-seconds: 300   # 5 минут; считается в тиках сервера, не по стенным часам
-  break-radius: 22        # радиус разрушения гриба-взрыва
+  radius: 60              # water collection radius; loaded chunks only
+  cooldown-seconds: 300   # 5 minutes, measured in server ticks rather than wall-clock time
+  break-radius: 22        # destruction radius of the mushroom-cloud blast
   damage: 220.0
-  cap-radius: 15          # радиус "шляпки" гриба
-  height: 32              # высота столба гриба
-  # Сколько капель рисуют облако. Силуэт гриба читается ровно настолько, насколько
-  # велико это число: раньше вдали от океана оставалось 40 капель и гриба было
-  # практически не видно. Недостающие «конденсируются из воздуха».
+  cap-radius: 15          # radius of the mushroom-cloud cap
+  height: 32              # height of the mushroom-cloud stem
+  # Number of droplets used to render the cloud. The mushroom silhouette is only
+  # as readable as this value allows: away from an ocean, only 40 droplets used
+  # to remain and the cloud was nearly invisible. Missing droplets "condense from the air."
   cloud-blocks: 340
-  cloud-scale: 1.8        # размер капли облака (крупнее = плотнее силуэт)
-  # Кратер собирается как ОБЪЕДИНЕНИЕ множества под-взрывов, а не одна ровная чаша:
-  # получаются лопасти, гребни между воронками, рваный край и уцелевшие столбы внутри.
-  # 0 = вернуться к одной гладкой чаше.
+  cloud-scale: 1.8        # cloud droplet size; larger values produce a denser silhouette
+  # The crater is the UNION of many sub-blasts rather than one smooth bowl,
+  # producing lobes, ridges between pits, a torn edge, and surviving inner pillars.
+  # 0 returns to a single smooth bowl.
   blast-count: 18
-  blast-roughness: 0.55   # 0..1 — неровность под-взрывов и частота уцелевших столбов
+  blast-roughness: 0.55   # 0..1 — sub-blast roughness and frequency of surviving pillars
 
 damage:
   enabled: true
-  friendly-fire: true     # можно ли бить других игроков; влияет и на то, кого лечат
-  global-multiplier: 1.0  # общий множитель урона всех форм — главная ручка баланса
-  # Доля урона по площади, которая проходит сквозь стену. 1.0 = стены не мешают
-  # (как было), 0.0 = полное укрытие. Вода умеет заворачивать за угол, поэтому
-  # по умолчанию ослабление, а не блокировка.
+  friendly-fire: true     # whether other players can be damaged; also affects who is healed
+  global-multiplier: 1.0  # global damage multiplier for all forms; the main balance control
+  # Fraction of area damage that passes through a wall. 1.0 means walls do not
+  # interfere; 0.0 means complete cover. Water can bend around corners, so the
+  # default weakens damage instead of blocking it entirely.
   through-cover: 0.45
 
 griefing:
-  break-blocks: true      # ломать ли пол/блоки при ударах
-  # Если ломать нельзя — оставлять ли всё-таки стоячую воду после удара.
-  # false = «не переставляй мой мир» действительно означает это.
+  break-blocks: true      # whether impacts can break terrain
+  # When breaking is disabled, whether impacts may still leave standing water.
+  # false makes "do not rearrange my world" mean exactly that.
   flood-without-breaking: false
-  # Спрашивать разрешения у плагинов защиты (WorldGuard, GriefPrevention, Towny,
-  # Lands...) через ванильное событие взрыва. Зависимостей не требует. Через этот
-  # же гейт проходит и ЗАБОР воды, и лёд «Водной Поступи», и коридор «Расступись».
+  # Ask protection plugins (WorldGuard, GriefPrevention, Towny, Lands, etc.) for
+  # permission through a vanilla explosion event. No dependency is required.
+  # Water collection, Water Walk ice, and the Part the Waters corridor use the same gate.
   respect-protection: true
-  permanent: true         # ПОСЛЕДСТВИЯ ОСТАЮТСЯ: разрушения и вода не пропадают
-  restore-ticks: 1200     # (если permanent=false) через сколько вернуть блоки
-  max-break-radius: 7      # ограничение радиуса разрушения
-  blacklist:               # эти блоки никогда не трогаются
+  permanent: true         # AFTERMATH REMAINS: destruction and water do not disappear
+  restore-ticks: 1200     # when permanent=false, delay before restoring blocks
+  max-break-radius: 7     # maximum destruction radius
+  blacklist:              # these blocks are never modified
     - BEDROCK
     - BARRIER
     - COMMAND_BLOCK
@@ -155,10 +155,10 @@ griefing:
 effects:
   particles: true
   sounds: true
-  # Мастер-множитель громкости всех звуков плагина. Дробовик кладёт до 9 попаданий
-  # разом; для записи со голосом полезно приглушить.
+  # Master volume multiplier for every plugin sound. Water Shotgun can produce
+  # up to 9 impacts at once, so lowering this helps when recording commentary.
   sound-volume: 1.0
 
 items:
-  enable-recipes: true     # включить крафты Святой Воды и Тотема
-  give-catalyst-on-drink: true  # выдавать Водный Тотем при употреблении Святой Воды
+  enable-recipes: true     # enable Holy Water and Water Totem recipes
+  give-catalyst-on-drink: true  # give a Water Totem when Holy Water is consumed

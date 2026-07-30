@@ -40,50 +40,50 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
                 if (notAdmin(sender, pfx)) return true;
                 Player t = target(sender, args, 1);
                 if (t == null) {
-                    Msg.send(sender, pfx, "&cУкажи игрока.");
+                    Msg.send(sender, pfx, "&cSpecify a player.");
                     return true;
                 }
                 t.getInventory().addItem(plugin.items().holyWater(1));
-                Msg.send(sender, pfx, "&fВыдана &bСвятая Вода&f игроку &b" + t.getName());
+                Msg.send(sender, pfx, "&bHoly Water &fwas given to &b" + t.getName());
             }
             case "catalyst" -> {
                 Player t = target(sender, args, 1);
                 if (t == null) {
-                    Msg.send(sender, pfx, "&cУкажи игрока.");
+                    Msg.send(sender, pfx, "&cSpecify a player.");
                     return true;
                 }
                 boolean self = sender instanceof Player sp && sp.equals(t);
                 if (!sender.hasPermission("aquapowers.admin") && !(self && plugin.users().isPowered(t))) {
-                    Msg.send(sender, pfx, "&cНет прав.");
+                    Msg.send(sender, pfx, "&cYou do not have permission.");
                     return true;
                 }
                 t.getInventory().addItem(plugin.items().catalyst());
-                Msg.send(sender, pfx, "&fВыдан &3Водный Тотем&f игроку &b" + t.getName());
+                Msg.send(sender, pfx, "&3Water Totem &fwas given to &b" + t.getName());
             }
             case "grant" -> {
                 if (notAdmin(sender, pfx)) return true;
                 Player t = target(sender, args, 1);
                 if (t == null) {
-                    Msg.send(sender, pfx, "&cУкажи игрока.");
+                    Msg.send(sender, pfx, "&cSpecify a player.");
                     return true;
                 }
                 plugin.users().grant(t, true);
-                Msg.send(sender, pfx, "&fСила воды дарована &b" + t.getName());
+                Msg.send(sender, pfx, "&fWater powers were granted to &b" + t.getName());
             }
             case "revoke" -> {
                 if (notAdmin(sender, pfx)) return true;
                 Player t = target(sender, args, 1);
                 if (t == null) {
-                    Msg.send(sender, pfx, "&cУкажи игрока.");
+                    Msg.send(sender, pfx, "&cSpecify a player.");
                     return true;
                 }
                 plugin.users().revoke(t);
-                Msg.send(sender, pfx, "&fСила воды отнята у &b" + t.getName());
+                Msg.send(sender, pfx, "&fWater powers were revoked from &b" + t.getName());
             }
             case "on" -> {
                 if (notAdmin(sender, pfx)) return true;
                 if (!(sender instanceof Player p)) {
-                    Msg.send(sender, pfx, "&cТолько для игрока.");
+                    Msg.send(sender, pfx, "&cThis command can only be used by a player.");
                     return true;
                 }
                 plugin.users().grant(p, true);
@@ -91,7 +91,7 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
             case "off" -> {
                 if (notAdmin(sender, pfx)) return true;
                 if (!(sender instanceof Player p)) {
-                    Msg.send(sender, pfx, "&cТолько для игрока.");
+                    Msg.send(sender, pfx, "&cThis command can only be used by a player.");
                     return true;
                 }
                 plugin.users().revoke(p);
@@ -100,14 +100,14 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
                 if (notAdmin(sender, pfx)) return true;
                 Player t = target(sender, args, 1);
                 if (t == null) {
-                    Msg.send(sender, pfx, "&cУкажи игрока.");
+                    Msg.send(sender, pfx, "&cSpecify a player.");
                     return true;
                 }
                 plugin.users().debugAwaken(t);
-                Msg.send(sender, pfx, "&bАвакенинг + полная стамина выданы &f" + t.getName());
+                Msg.send(sender, pfx, "&bAwakening and full stamina were given to &f" + t.getName());
             }
             case "forms" -> {
-                Msg.send(sender, pfx, "&bГруппы способностей &7(цифра = группа, затем цифра = способность):");
+                Msg.send(sender, pfx, "&bAbility groups &7(number = group, then number = ability):");
                 int gi = 1;
                 for (FormGroup g : plugin.forms().groups()) {
                     sender.sendMessage(Msg.color("&8» " + g.color() + "&l" + gi + ". " + g.name()));
@@ -125,14 +125,14 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
                 // up in a TPS graph or a profiler — it surfaces as rubber-banding on a "healthy"
                 // server. This is the only way to see it.
                 var an = plugin.animator();
-                Msg.send(sender, pfx, "&bСостояние &7(тик " + an.ticks() + ")");
-                sender.sendMessage(Msg.color("&8Эффектов: &f" + an.activeCount()
+                Msg.send(sender, pfx, "&bStatus &7(tick " + an.ticks() + ")");
+                sender.sendMessage(Msg.color("&8Effects: &f" + an.activeCount()
                         + "&8/&7" + plugin.cfg().maxEffects
-                        + " &8| дисплеев: &f" + an.totalDisplays()
+                        + " &8| displays: &f" + an.totalDisplays()
                         + "&8/&7" + plugin.cfg().maxDisplays));
                 var byType = an.breakdown();
                 if (byType.isEmpty()) {
-                    sender.sendMessage(Msg.color("&8  (пусто)"));
+                    sender.sendMessage(Msg.color("&8  (empty)"));
                 } else {
                     byType.entrySet().stream()
                             .sorted((a, b) -> b.getValue() - a.getValue())
@@ -143,10 +143,10 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
                     if (!plugin.users().isPowered(pl)) continue;
                     var u = plugin.users().user(pl);
                     sender.sendMessage(Msg.color("&8" + pl.getName()
-                            + " &7эфф " + an.countFor(pl.getUniqueId())
-                            + " &8| &7стам " + (int) u.getStamina()
-                            + " &8| &7стихия " + u.getAttunement().label
-                            + " &8| &7шар " + (u.hasOrb() ? u.getOrb().blockCount() : 0)
+                            + " &7effects " + an.countFor(pl.getUniqueId())
+                            + " &8| &7stamina " + (int) u.getStamina()
+                            + " &8| &7attunement " + u.getAttunement().label
+                            + " &8| &7orb " + (u.hasOrb() ? u.getOrb().blockCount() : 0)
                             + (u.isAwakening() ? " &c⚡" : "")));
                 }
             }
@@ -154,7 +154,7 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
                 if (notAdmin(sender, pfx)) return true;
                 plugin.reloadAll();
                 if (plugin.cfg().enableRecipes) plugin.items().registerRecipes();
-                Msg.send(sender, pfx, "&aКонфиг перезагружен.");
+                Msg.send(sender, pfx, "&aConfiguration reloaded.");
             }
             default -> help(sender, label, pfx);
         }
@@ -162,22 +162,22 @@ public final class AquaCommand implements CommandExecutor, TabCompleter {
     }
 
     private void help(CommandSender s, String label, String pfx) {
-        Msg.send(s, pfx, "&bAquaPowers &7— управление водой");
-        s.sendMessage(Msg.color("&8/" + label + " give [игрок] &7— выдать Святую Воду"));
-        s.sendMessage(Msg.color("&8/" + label + " catalyst [игрок] &7— выдать Водный Тотем"));
-        s.sendMessage(Msg.color("&8/" + label + " grant|revoke <игрок> &7— дать/забрать силу"));
-        s.sendMessage(Msg.color("&8/" + label + " on|off &7— включить/выключить силу себе"));
-        s.sendMessage(Msg.color("&8/" + label + " awaken <игрок> &7— выдать Авакенинг (тест)"));
-        s.sendMessage(Msg.color("&8/" + label + " forms &7— список всех способностей"));
-        s.sendMessage(Msg.color("&8/" + label + " debug &7— живые эффекты, дисплеи, состояние игроков"));
-        s.sendMessage(Msg.color("&8/" + label + " reload &7— перезагрузить конфиг"));
-        s.sendMessage(Msg.color("&7Управление (рука пуста): &eпервая цифра — группа&7, "
-                + "&eвторая — способность&7, &eF &7— сброс."));
+        Msg.send(s, pfx, "&bAquaPowers &7— water manipulation");
+        s.sendMessage(Msg.color("&8/" + label + " give [player] &7— give Holy Water"));
+        s.sendMessage(Msg.color("&8/" + label + " catalyst [player] &7— give a Water Totem"));
+        s.sendMessage(Msg.color("&8/" + label + " grant|revoke <player> &7— grant/revoke powers"));
+        s.sendMessage(Msg.color("&8/" + label + " on|off &7— enable/disable your powers"));
+        s.sendMessage(Msg.color("&8/" + label + " awaken <player> &7— grant Awakening (testing)"));
+        s.sendMessage(Msg.color("&8/" + label + " forms &7— list all abilities"));
+        s.sendMessage(Msg.color("&8/" + label + " debug &7— live effects, displays, and player status"));
+        s.sendMessage(Msg.color("&8/" + label + " reload &7— reload the configuration"));
+        s.sendMessage(Msg.color("&7Controls (empty main hand): &efirst number — group&7, "
+                + "&esecond — ability&7, &eF &7— reset."));
     }
 
     private boolean notAdmin(CommandSender s, String pfx) {
         if (s.hasPermission("aquapowers.admin")) return false;
-        Msg.send(s, pfx, "&cНедостаточно прав.");
+        Msg.send(s, pfx, "&cYou do not have permission.");
         return true;
     }
 

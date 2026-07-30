@@ -26,17 +26,17 @@ import org.bukkit.entity.Player;
 public enum Attunement {
 
     /** In the water. The element is all around you. */
-    SUBMERGED("Погружение", "&b", 0.55, 1.30, 0.0),
+    SUBMERGED("Immersion", "&b", 0.55, 1.30, 0.0),
     /** Rain from an open sky — you can pull water out of the air itself. */
-    RAIN("Ливень", "&9", 0.70, 1.18, 0.0),
+    RAIN("Downpour", "&9", 0.70, 1.18, 0.0),
     /** Standing beside a body of water. */
-    FLOW("Течение", "&3", 0.80, 1.12, 0.0),
+    FLOW("Flow", "&3", 0.80, 1.12, 0.0),
     /** Ordinary ground. */
-    NEUTRAL("Равновесие", "&7", 1.0, 1.0, 0.0),
+    NEUTRAL("Balance", "&7", 1.0, 1.0, 0.0),
     /** Desert, savanna, badlands — the air drinks your orb. */
-    DRY("Сушь", "&e", 1.30, 0.90, 0.6),
+    DRY("Drought", "&e", 1.30, 0.90, 0.6),
     /** Lava, fire, the Nether. Water here is a losing argument. */
-    SCORCHED("Пекло", "&c", 1.70, 0.78, 2.2);
+    SCORCHED("Inferno", "&c", 1.70, 0.78, 2.2);
 
     public final String label;
     public final String color;
@@ -131,7 +131,7 @@ public enum Attunement {
         if (heat >= 1 || temp >= 1.5) return SCORCHED;
         if (water >= wetEnough || (solid > 0 && water * 2 >= solid)) return FLOW;
         // DRY is tested before RAIN on purpose. `hasStorm()` is a property of the world, not of the
-        // biome, so a savanna (temp 1.2, no precipitation in vanilla) used to be handed full Ливень
+        // biome, so a savanna (temp 1.2, no precipitation in vanilla) used to be handed full Downpour
         // benefits while standing under a clear sky. Anything hot or arid is dry, storm or not; the
         // humidity term additionally excludes rainless biomes that happen to be temperate.
         if (temp >= 0.95 || humidity < 0.25) return DRY;

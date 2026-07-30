@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * "Прибой" — the wave the bender rides instead of throwing.
+ * "Surf" — the wave the bender rides instead of throwing.
  *
  * <p>Everything else in the kit sends water away from you. This puts you on top of it: a crest forms
  * under your feet and carries you across the landscape while you steer with the mouse, flattening

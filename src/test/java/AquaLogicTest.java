@@ -182,7 +182,7 @@ class AquaLogicTest {
         assertTrue(!noGroup.ok());
         assertEquals(Selection.NO_GROUP, noGroup.group(), "a rejected press must not choose a group");
 
-        // Группа "Контроль" has four abilities after the duplicate dome was removed.
+        // The "Control" group has four abilities after the duplicate dome was removed.
         assertEquals(Selection.Kind.REJECTED, Selection.press(2, 5, 6, 4).kind(),
                 "there is no fifth ability in a four-ability group");
         assertEquals(Selection.Kind.ABILITY, Selection.press(2, 4, 6, 4).kind(),
@@ -302,7 +302,7 @@ class AquaLogicTest {
         assertTrue(!entry.endsWith("§"), "entry ends on a dangling section sign: " + entry);
 
         // And the length bound holds for every row of a full sidebar, colour codes included.
-        String longName = "§4§l☢ Аква-Армагеддон ☢ очень длинное имя способности";
+        String longName = "§4§l☢ Aqua Armageddon ☢ an extremely long ability name";
         for (int i = 0; i < 14; i++) {
             String e = UserManager.uniqueEntry(longName, i);
             assertTrue(e.length() <= 40, "entry too long at line " + i);

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * "Призыв Воды" — pulls nearby water to where you aim (or onto the entity you target),
+ * "Water Summoning" — pulls nearby water to where you aim (or onto the entity you target),
  * dealing damage on arrival. The delivered water flows naturally.
  *
  * <p>This used to destroy roughly four fifths of the water it claimed to move. The delivery loop

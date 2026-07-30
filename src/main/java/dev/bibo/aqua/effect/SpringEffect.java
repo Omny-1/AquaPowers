@@ -17,7 +17,7 @@ import org.bukkit.util.Vector;
 import java.util.List;
 
 /**
- * "Родник" — a fountain planted in the ground that holds a piece of ground.
+ * "Spring" — a fountain planted in the ground that holds a piece of ground.
  *
  * <p>Where {@link HealEffect} follows the caster, this stays put: allies who stand in it are mended
  * and can breathe underwater; enemies who wade in are slowed and pushed back out. It gives a bender
@@ -87,7 +87,7 @@ public final class SpringEffect extends BaseEffect {
             if (!(e instanceof LivingEntity le) || le.isDead()) continue;
             if (base.distance(e.getLocation()) > radius) continue;
 
-            // Same rule as Живая Вода: yourself, your pets, and everyone else only where PvP is off.
+            // Same rule as Living Water: yourself, your pets, and everyone else only where PvP is off.
             boolean ally = e.equals(player)
                     || (e instanceof Player && !plugin.cfg().friendlyFire)
                     || (e instanceof org.bukkit.entity.Tameable t && player.equals(t.getOwner()));

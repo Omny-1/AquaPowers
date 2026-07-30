@@ -35,11 +35,11 @@ public final class Items {
             } catch (Throwable ignored) {
             }
             meta.setColor(Color.fromRGB(64, 164, 223));
-            meta.setDisplayName(Msg.color("&b&lСвятая Вода"));
+            meta.setDisplayName(Msg.color("&b&lHoly Water"));
             meta.setLore(Arrays.asList(
-                    Msg.color("&7Выпей, чтобы пробудить в себе"),
-                    Msg.color("&7силу управления водой."),
-                    Msg.color("&8— благословение глубин —")));
+                    Msg.color("&7Drink it to awaken"),
+                    Msg.color("&7the power to control water."),
+                    Msg.color("&8— blessing of the depths —")));
             meta.getPersistentDataContainer().set(keys.holyWater, PersistentDataType.BYTE, (byte) 1);
             it.setItemMeta(meta);
         }
@@ -50,20 +50,20 @@ public final class Items {
         ItemStack it = new ItemStack(Material.HEART_OF_THE_SEA);
         ItemMeta meta = it.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(Msg.color("&3&lВодный Тотем"));
+            meta.setDisplayName(Msg.color("&3&lWater Totem"));
             meta.setLore(Arrays.asList(
-                    Msg.color("&7Держи &fв левой руке&7, правая рука пуста."),
+                    Msg.color("&7Hold it in your &foff hand&7 with an empty main hand."),
                     Msg.color(" "),
-                    Msg.color("&7Первая цифра &8— &bгруппа"),
-                    Msg.color("&7Вторая цифра &8— &bспособность в ней"),
-                    Msg.color("&7Клавиша &fF &8— &bсброс, выбрать заново"),
-                    Msg.color("&7ПКМ &8— &bнабрать воду &8(&7Shift+ПКМ &8— развеять)"),
-                    Msg.color("&7ЛКМ &8— &bвыпустить способность"),
+                    Msg.color("&7First number &8— &bselect a group"),
+                    Msg.color("&7Second number &8— &bselect an ability"),
+                    Msg.color("&7Press &fF &8— &breset the selection"),
+                    Msg.color("&7Right-click &8— &bcollect water &8(&7Shift+right-click &8— disperse)"),
+                    Msg.color("&7Left-click &8— &bcast the selected ability"),
                     Msg.color(" "),
-                    Msg.color("&8Цифра, под которой лежит предмет, просто"),
-                    Msg.color("&8берёт его — держи нижние слоты пустыми."),
-                    Msg.color("&8Предмет в руке — плагин молчит совсем."),
-                    Msg.color("&8Несбрасываемый, не теряется при смерти.")));
+                    Msg.color("&8Pressing the number of an occupied slot"),
+                    Msg.color("&8simply selects its item, so keep those slots empty."),
+                    Msg.color("&8With an item in your main hand, the plugin stays silent."),
+                    Msg.color("&8Cannot be dropped and is kept on death.")));
             meta.getPersistentDataContainer().set(keys.catalyst, PersistentDataType.BYTE, (byte) 1);
             it.setItemMeta(meta);
         }

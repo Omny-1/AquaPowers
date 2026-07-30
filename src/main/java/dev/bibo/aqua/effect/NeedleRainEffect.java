@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * "Дождь Игл" — a downpour of water needles over an area, not a volley.
+ * "Needle Rain" — a downpour of water needles over an area, not a volley.
  *
  * <p>It used to be a handful of ordinary projectiles fired at once from nine blocks up, which read as
  * a few fat jets arriving together and then nothing. Rain is the opposite shape: it starts high, it

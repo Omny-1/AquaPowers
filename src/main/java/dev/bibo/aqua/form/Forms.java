@@ -48,8 +48,8 @@ public final class Forms {
     public Forms(AquaWaterPlugin plugin) {
         // ---- Group 1: focused / projectile ---------------------------------
 
-        WaterForm bullet = new WaterForm("bullet", "&b&lВодяная Пика",
-                "Сжатая пика воды. &fМало воды&7 — быстрая пробивающая игла, &fполный шар&7 — тяжёлое копьё со взрывом.",
+        WaterForm bullet = new WaterForm("bullet", "&b&lWater Pike",
+                "A compressed water pike. &fLow water&7 — a fast piercing needle; &ffull orb&7 — a heavy explosive lance.",
                 16, true, false,
                 (c, b) -> {
                     boolean light = c.charge.isLight();
@@ -66,8 +66,8 @@ public final class Forms {
                             .signature(light ? ImpactFx.NEEDLE : ImpactFx.SPEAR));
                 }).cooldown(1.5);
 
-        WaterForm dragon = new WaterForm("dragon", "&b&lВодяной Дракон",
-                "Поток воды взмывает дугой как из катапульты и обрушивается на цель (с самонаведением).",
+        WaterForm dragon = new WaterForm("dragon", "&b&lWater Dragon",
+                "A stream of water arcs upward like a catapult shot and crashes onto the target with homing.",
                 22, true, false,
                 (c, b) -> {
                     Location aim = Targeting.lookPoint(c.player, 30);
@@ -82,8 +82,8 @@ public final class Forms {
                             .signature(ImpactFx.METEOR));
                 }).cooldown(4);
 
-        WaterForm shotgun = new WaterForm("shotgun", "&b&lВодяной Дробовик",
-                "Залп водяных болтов. &fМало воды&7 — 3 кучных и злых, &fполный шар&7 — широкий веер.",
+        WaterForm shotgun = new WaterForm("shotgun", "&b&lWater Shotgun",
+                "A volley of water bolts. &fLow water&7 — 3 tight, vicious shots; &ffull orb&7 — a wide spread.",
                 20, true, false,
                 (c, b) -> {
                     boolean light = c.charge.isLight();
@@ -103,9 +103,9 @@ public final class Forms {
                     }
                 }).cooldown(3);
 
-        WaterForm needles = new WaterForm("needles", "&b&lДождь Игл",
-                "Ливень водяных игл держит зону ~10 секунд. Каждая игла почти не жалит, "
-                        + "но их много и они не кончаются.", 24, true, false,
+        WaterForm needles = new WaterForm("needles", "&b&lNeedle Rain",
+                "A downpour of water needles controls an area for ~10 seconds. Each needle barely stings, "
+                        + "but there are many of them and they keep coming.", 24, true, false,
                 (c, b) -> {
                     Location ground = aimGround(c.player, 30);
                     c.add(new NeedleRainEffect(c.plugin, c.player, b, ground,
@@ -117,8 +117,8 @@ public final class Forms {
                             5));                 // at most one nick per victim per quarter-second
                 }).cooldown(9);
 
-        WaterForm whip = new WaterForm("whip", "&b&lВодяной Хлыст",
-                "Плеть воды. &fМало воды&7 — длинный и стремительный росчерк, &fполный шар&7 — тяжёлый удар с отбросом.",
+        WaterForm whip = new WaterForm("whip", "&b&lWater Whip",
+                "A lash of water. &fLow water&7 — a long, swift stroke; &ffull orb&7 — a heavy knockback strike.",
                 14, true, false,
                 (c, b) -> {
                     boolean light = c.charge.isLight();
@@ -130,12 +130,12 @@ public final class Forms {
                             Math.toRadians(light ? 185 : 150), false));
                 }).cooldown(2);
 
-        groups.add(new FormGroup("Точечные", "&b", bullet, dragon, shotgun, needles, whip));
+        groups.add(new FormGroup("Point", "&b", bullet, dragon, shotgun, needles, whip));
 
         // ---- Group 2: area / ground ----------------------------------------
 
-        WaterForm geyser = new WaterForm("geyser", "&3&lГейзер",
-                "Столб воды бьёт из-под цели. &fМало воды&7 — узкая струя-катапульта, &fполный шар&7 — широкий разлом.",
+        WaterForm geyser = new WaterForm("geyser", "&3&lGeyser",
+                "A pillar of water erupts beneath the target. &fLow water&7 — a narrow catapult jet; &ffull orb&7 — a wide rupture.",
                 26, true, false,
                 (c, b) -> {
                     Location g = aimGround(c.player, 26);
@@ -148,39 +148,39 @@ public final class Forms {
                             light ? 11 : lp(c, 5, 9), c.power));
                 }).cooldown(4);
 
-        WaterForm whirlpool = new WaterForm("whirlpool", "&3&lВодоворот",
-                "Вихрь на земле затягивает врагов и перемалывает их.", 30, true, false,
+        WaterForm whirlpool = new WaterForm("whirlpool", "&3&lWhirlpool",
+                "A ground vortex pulls enemies in and grinds them down.", 30, true, false,
                 (c, b) -> {
                     Location g = aimGround(c.player, 26);
                     c.add(new VortexEffect(c.plugin, c.player, b, VortexEffect.Mode.WHIRLPOOL,
                             g, null, lp(c, 3.5, 6), 130, lp(c, 0.25, 0.5), lp(c, 2, 5), lp(c, 2.2, 3.5), c.power));
                 }).cooldown(8);
 
-        WaterForm tornado = new WaterForm("tornado", "&3&lВодяной Смерч",
-                "Воронка воды едет вперёд, затягивает и подбрасывает врагов.", 34, true, false,
+        WaterForm tornado = new WaterForm("tornado", "&3&lWater Tornado",
+                "A moving funnel of water pulls enemies in and throws them upward.", 34, true, false,
                 (c, b) -> c.add(new TornadoEffect(c.plugin, c.player, b, lp(c, 2.5, 4.5), lp(c, 5, 9),
                         lp(c, 14, 24), 0.7, lp(c, 4, 9), lp(c, 0.8, 1.4), li(c, 2, 4), c.power))).cooldown(9);
 
-        WaterForm meteor = new WaterForm("meteor", "&3&lВодяной Метеор",
-                "Шар взмывает и обрушивается в точку чудовищным взрывом.", 45, true, false,
+        WaterForm meteor = new WaterForm("meteor", "&3&lWater Meteor",
+                "The orb rises and crashes into the target point with a massive explosion.", 45, true, false,
                 (c, b) -> {
                     Location g = aimGround(c.player, 34);
                     c.add(new SlamEffect(c.plugin, c.player, b, g, lp(c, 12, 20), lp(c, 5, 9),
                             lp(c, 12, 30), lp(c, 0.6, 1.0), li(c, 3, 6), false, 18, 0, c.power));
                 }).cooldown(10);
 
-        WaterForm deluge = new WaterForm("deluge", "&3&lВеликий Потоп",
-                "Колоссальный поток сносит и ломает огромную зону.", 55, true, false,
+        WaterForm deluge = new WaterForm("deluge", "&3&lGreat Deluge",
+                "A colossal torrent sweeps through and destroys a vast area.", 55, true, false,
                 (c, b) -> c.add(new WaveEffect(c.plugin, c.player, b, dir(c.player), lp(c, 10, 18),
                         lp(c, 5, 9), lp(c, 22, 32), 1.0, lp(c, 9, 18), lp(c, 1.2, 2.2), true, li(c, 3, 6), c.power)))
                 .cooldown(12);
 
-        groups.add(new FormGroup("Зональные", "&3", geyser, whirlpool, tornado, meteor, deluge));
+        groups.add(new FormGroup("Area", "&3", geyser, whirlpool, tornado, meteor, deluge));
 
         // ---- Group 3: control / defence ------------------------------------
 
-        WaterForm wall = new WaterForm("wall", "&9&lВодяная Стена",
-                "Стена воды. &fМало воды&7 — мгновенный низкий отбойник, &fполный шар&7 — высокая стена, что держится и сносит.",
+        WaterForm wall = new WaterForm("wall", "&9&lWater Wall",
+                "A wall of water. &fLow water&7 — an instant low barrier; &ffull orb&7 — a tall, lasting wall that sweeps enemies away.",
                 22, true, false,
                 (c, b) -> {
                     boolean light = c.charge.isLight();
@@ -191,13 +191,13 @@ public final class Forms {
                             li(c, 2, 4), light ? 8 : 46, c.power));
                 }).cooldown(5);
 
-        WaterForm clones = new WaterForm("clones", "&9&lВодяные Клоны",
-                "Шар распадается на водяных двойников, что атакуют врагов.", 30, true, false,
+        WaterForm clones = new WaterForm("clones", "&9&lWater Clones",
+                "The orb splits into water doubles that attack enemies.", 30, true, false,
                 (c, b) -> c.add(new CloneEffect(c.plugin, c.player, b, Math.min(li(c, 2, 4), b.size()),
                         130, lp(c, 1, 2), 0.5))).cooldown(12);
 
-        WaterForm prison = new WaterForm("prison", "&9&lВодяная Тюрьма",
-                "Сфера воды запирает цель и топит её. (Нужна цель — моб или игрок.)", 24, true, false,
+        WaterForm prison = new WaterForm("prison", "&9&lWater Prison",
+                "A sphere of water traps and drowns the target. (Requires a mob or player target.)", 24, true, false,
                 (c, b) -> {
                     LivingEntity tgt = Targeting.targetEntity(c.player, 30);
                     Location center = tgt != null ? tgt.getLocation() : c.player.getLocation();
@@ -205,79 +205,79 @@ public final class Forms {
                             center, tgt, lp(c, 1.3, 2.0), 100, 0, lp(c, 0.5, 1.0), 0, c.power));
                 }).requireTarget().cooldown(8);
 
-        // "Водяной Купол" lived here: a round shell of water around the caster that shoved enemies
-        // away. Водный Барьер (Поддержка) is the same silhouette and the same idea, only it also
+        // "Water Dome" lived here: a round shell of water around the caster that shoved enemies
+        // away. Water Barrier (Support) has the same silhouette and concept, while also
         // drinks incoming damage, puts out fire, visibly thins as it is spent and bursts when it
         // fails. Two abilities that look identical and do nearly the same thing is worse than one
         // good one, so the weaker duplicate is gone rather than kept for the count.
 
-        WaterForm mines = new WaterForm("mines", "&9&lВодяные Мины",
-                "Водяные заряды на земле детонируют гейзером у врага.", 36, true, false,
+        WaterForm mines = new WaterForm("mines", "&9&lWater Mines",
+                "Water charges on the ground detonate into geysers near enemies.", 36, true, false,
                 (c, b) -> {
                     Location g = aimGround(c.player, 26);
                     c.add(new MineEffect(c.plugin, c.player, b, g, Math.min(li(c, 3, 6), b.size()),
                             lp(c, 2.5, 4.5), lp(c, 2.2, 3.2), 220, lp(c, 6, 16), 1, c.power));
                 }).cooldown(9);
 
-        groups.add(new FormGroup("Контроль", "&9", wall, clones, prison, mines));
+        groups.add(new FormGroup("Control", "&9", wall, clones, prison, mines));
 
         // ---- Group 4: movement & utility -----------------------------------
 
         // Built by UserManager (like the ultimate) because it must be able to report "there was
         // nothing to part" before the caster is charged for it.
-        WaterForm part = new WaterForm("part", "&a&lРасступись",
-                "Раздвигает воду в две стены вдоль взгляда (до 60 блоков), потом плавно заливает.",
+        WaterForm part = new WaterForm("part", "&a&lPart the Waters",
+                "Parts water into two walls along your line of sight for up to 60 blocks, then lets it flow back.",
                 12, false, false, (c, b) -> { /* handled specially by UserManager */ }).cooldown(6);
 
-        WaterForm relocate = new WaterForm("relocate", "&a&lПризыв Воды",
-                "Вода летит туда, куда целишься (или в цель), и бьёт по площади.", 14, false, false,
+        WaterForm relocate = new WaterForm("relocate", "&a&lWater Summoning",
+                "Water flies where you aim, or onto your target, and deals area damage.", 14, false, false,
                 (c, b) -> c.add(new RelocateEffect(c.plugin, c.player, 14, 120, lp(c, 1, 2)))).cooldown(4);
 
-        WaterForm walk = new WaterForm("walk", "&a&lВодная Поступь",
-                "На время позволяет ходить по воде.", 16, false, false,
+        WaterForm walk = new WaterForm("walk", "&a&lWater Walk",
+                "Temporarily allows you to walk on water.", 16, false, false,
                 (c, b) -> c.add(new WaterWalkEffect(c.plugin, c.player, 200, 1))).cooldown(12);
 
-        WaterForm dash = new WaterForm("dash", "&a&lВодяной Рывок",
-                "Вода вырывается из-под ног и подбрасывает тебя туда, куда смотришь.", 14, false, false,
+        WaterForm dash = new WaterForm("dash", "&a&lWater Dash",
+                "Water bursts from beneath your feet and launches you in the direction you are looking.", 14, false, false,
                 (c, b) -> c.add(new WaterDashEffect(c.plugin, c.player, 1.5, 0.55)));
 
-        WaterForm surf = new WaterForm("surf", "&a&lПрибой",
-                "Встань НА свою волну и мчись по земле, рулём — мышь. Sneak — спрыгнуть.",
+        WaterForm surf = new WaterForm("surf", "&a&lSurf",
+                "Ride ON your own wave across land; steer with the mouse and sneak to dismount.",
                 20, true, false,
                 (c, b) -> c.add(new SurfEffect(c.plugin, c.player, b, lp(c, 4, 7), lp(c, 2.2, 3.4),
                         c.charge.isLight() ? 1.15 : 0.85, lp(c, 3, 8), lp(c, 0.9, 1.6), li(c, 70, 130))))
                 .cooldown(8);
 
-        groups.add(new FormGroup("Особые", "&a", part, relocate, walk, dash, surf));
+        groups.add(new FormGroup("Special", "&a", part, relocate, walk, dash, surf));
 
         // ---- Group 5: support ----------------------------------------------
 
-        WaterForm heal = new WaterForm("heal", "&d&lЖивая Вода",
-                "Ленты воды лечат тебя и союзников, тушат огонь и смывают яд.", 28, true, false,
+        WaterForm heal = new WaterForm("heal", "&d&lLiving Water",
+                "Ribbons of water heal you and your allies, extinguish fire, and wash away poison.", 28, true, false,
                 (c, b) -> c.add(new HealEffect(c.plugin, c.player, b, lp(c, 3, 6), 160,
                         lp(c, 1.0, 2.5), c.awakened ? 6 : 0))).cooldown(15);
 
-        WaterForm barrier = new WaterForm("barrier", "&d&lВодный Барьер",
-                "Панцирь воды пьёт входящий урон, гасит огонь и расталкивает тех, кто подошёл вплотную.",
+        WaterForm barrier = new WaterForm("barrier", "&d&lWater Barrier",
+                "A shell of water absorbs incoming damage, extinguishes fire, and pushes away nearby enemies.",
                 24, true, false,
                 (c, b) -> c.add(new BarrierEffect(c.plugin, c.player, b, lp(c, 1.4, 2.2), 200,
                         lp(c, 8, 26), c.charge.isHeavy() ? 0.75 : 0.55, lp(c, 0.35, 0.7)))).cooldown(14);
 
-        WaterForm spring = new WaterForm("spring", "&d&lРодник",
-                "Фонтан на земле: союзников лечит и даёт дышать под водой, врагов вязнет и выталкивает.",
+        WaterForm spring = new WaterForm("spring", "&d&lSpring",
+                "A ground fountain that heals allies and grants water breathing while slowing and pushing enemies.",
                 32, true, false,
                 (c, b) -> c.add(new SpringEffect(c.plugin, c.player, b, aimGround(c.player, 20),
                         lp(c, 3, 5.5), 300, lp(c, 0.8, 2.0), lp(c, 0.25, 0.5)))).cooldown(18);
 
-        groups.add(new FormGroup("Поддержка", "&d", heal, barrier, spring));
+        groups.add(new FormGroup("Support", "&d", heal, barrier, spring));
 
         // ---- Group 6: awakening ultimate -----------------------------------
 
-        WaterForm nuke = new WaterForm("nuke", "&4&l☢ Аква-Армагеддон ☢",
-                "Только в Авакенинге при полной стамине: вся вода в 60 блоках — и ядерный гриб-взрыв.",
+        WaterForm nuke = new WaterForm("nuke", "&4&l☢ Aqua Armageddon ☢",
+                "Awakening only, at full stamina: all water within 60 blocks forms a nuclear mushroom-cloud blast.",
                 0, false, true, (c, b) -> { /* handled specially by UserManager */ });
 
-        groups.add(new FormGroup("Авакенинг", "&4", nuke));
+        groups.add(new FormGroup("Awakening", "&4", nuke));
 
         for (FormGroup g : groups) flat.addAll(g.forms());
     }
@@ -293,7 +293,7 @@ public final class Forms {
      * Interpolate an ability stat between its weak and full-charge values.
      *
      * <p>These used to clamp {@code power} at 1.0, which silently deleted the entire environment and
-     * awakening system: at a full orb — the state everyone plays in — Погружение ×1.30 and Авакенинг
+     * awakening system: at a full orb — the state everyone plays in — Immersion ×1.30 and Awakening
      * ×1.25 both multiplied a number that had already been pinned, so they changed nothing about
      * damage, radius, count or duration. The clamp is gone; {@link FormContext} caps the multiplier
      * itself, so a peak state now extrapolates a little past the listed maximum instead of being

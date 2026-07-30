@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-/** "Аква-Армагеддон" — gathers all water in a huge radius into a giant orb, then drops it as a
+/** "Aqua Armageddon" — gathers all water in a huge radius into a giant orb, then drops it as a
  *  nuclear-style mushroom blast where the caster aims. Two-stage: charge, then {@link #drop}. */
 public final class NukeEffect extends BaseEffect {
 
@@ -210,10 +210,10 @@ public final class NukeEffect extends BaseEffect {
             float pitch = falling ? 1.6f : 0.5f;
             WorldFx.sound(plugin, p.getLocation(), "minecraft:block.beacon.deactivate", 1.0f, pitch);
             if (falling && target != null && p.getLocation().distance(target) < breakRadius * 1.5) {
-                p.sendTitle(Msg.color("&4&lБЕГИ"), Msg.color("&cАква-Армагеддон над тобой"), 0, 25, 8);
+                p.sendTitle(Msg.color("&4&lRUN"), Msg.color("&cAqua Armageddon is above you"), 0, 25, 8);
                 WorldFx.sound(plugin, p.getLocation(), "minecraft:entity.wither.spawn", 0.7f, 1.9f);
             } else {
-                Msg.actionBar(p, "&4☢ &cАква-Армагеддон заряжается неподалёку...");
+                Msg.actionBar(p, "&4☢ &cAqua Armageddon is charging nearby...");
             }
         }
     }

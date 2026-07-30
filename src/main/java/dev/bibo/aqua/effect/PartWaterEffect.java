@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-/** "Расступись" (Eneru-style): parts the REAL water into two walls along a long corridor ahead of you,
+/** "Part the Waters" (Eneru-style): parts the REAL water into two walls along a long corridor ahead of you,
  *  keeping the corridor dry, then lets the water flow back in. No illusory display blocks — the actual
  *  water in the world is simply pushed aside. Limited to a few simultaneous casts per player. */
 public final class PartWaterEffect extends BaseEffect {

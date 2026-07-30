@@ -17,7 +17,7 @@ import java.util.List;
 /** Swirling water construct: a ground whirlpool, or a prison cage around a victim. */
 public final class VortexEffect extends BaseEffect {
 
-    // DOME was removed along with "Водяной Купол" — it duplicated Водный Барьер.
+    // DOME was removed along with "Water Dome" — it duplicated Water Barrier.
     public enum Mode { WHIRLPOOL, PRISON }
 
     private final Mode mode;

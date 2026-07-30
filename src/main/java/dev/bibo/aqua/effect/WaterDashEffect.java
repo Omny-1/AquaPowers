@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-/** "Водяной Рывок" — gathers water under your feet and launches you toward where you look. */
+/** "Water Dash" — gathers water under your feet and launches you toward where you look. */
 public final class WaterDashEffect extends BaseEffect {
 
     private final List<Location> starts = new ArrayList<>();

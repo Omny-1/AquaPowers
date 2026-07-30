@@ -12,9 +12,9 @@ public final class AquaConfig {
 
     public String prefix = "&b";
 
-    public int collectRadius = 15;
+    public int collectRadius = 16;
     public int collectDuration = 40;
-    public int maxBlocks = 140;
+    public int maxBlocks = 120;
     public int minBlocks = 6;
     public boolean drainSource = true;
     public boolean restoreSourceOnDisperse = true;

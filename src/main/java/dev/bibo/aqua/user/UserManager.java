@@ -162,11 +162,11 @@ public final class UserManager {
         if (giveCatalyst && !plugin.items().hasCatalystInInventory(p)) plugin.items().giveCatalyst(p);
         updateBar(u, p);
         updateHud(u, p);
-        Msg.send(p, cfg().prefix, "&fТы пробудил &bсилу воды&f! &3Тотем &fдержи &eв левой руке&f.");
-        Msg.send(p, cfg().prefix, "&7Пока рука пуста: &eпервая цифра — группа&7, &eвторая — способность&7. "
-                + "&eF &7— сброс, снова выбираешь группу.");
-        Msg.send(p, cfg().prefix, "&7&oЦифра, под которой лежит предмет, просто берёт предмет — "
-                + "держи нижние слоты пустыми.");
+        Msg.send(p, cfg().prefix, "&fYou awakened the &bpower of water&f! Hold the &3Totem &fin your &eoff hand&f.");
+        Msg.send(p, cfg().prefix, "&7With an empty main hand: &efirst number — group&7, &esecond — ability&7. "
+                + "&eF &7— reset and choose a group again.");
+        Msg.send(p, cfg().prefix, "&7&oPressing the number of an occupied slot simply selects its item — "
+                + "keep those slots empty.");
         WorldFx.sound(plugin, p.getLocation(), "minecraft:block.beacon.activate", 1.0f, 1.4f);
     }
 
@@ -183,7 +183,7 @@ public final class UserManager {
         pdc.remove(keys.savedNukeCd);
         pdc.remove(keys.savedFormCds);
         online.remove(p.getUniqueId());
-        Msg.send(p, cfg().prefix, "&7Сила воды покинула тебя.");
+        Msg.send(p, cfg().prefix, "&7The power of water has left you.");
     }
 
     /**
@@ -252,14 +252,14 @@ public final class UserManager {
             case ABILITY -> {
                 WaterForm f = current.get(r.ability());
                 u.setSelected(f);
-                Msg.actionBar(p, "&aВыбрано: " + f.name()
-                        + " &8(" + (int) costOf(u, f) + " ст.) " + strip(current, f));
+                Msg.actionBar(p, "&aSelected: " + f.name()
+                        + " &8(" + (int) costOf(u, f) + " stamina) " + strip(current, f));
                 WorldFx.sound(plugin, p.getLocation(), "minecraft:block.note_block.bell", 0.7f, 1.5f);
             }
             case REJECTED -> {
                 Msg.actionBar(p, u.getCurrentGroup() == Selection.NO_GROUP
-                        ? "&cНет группы " + number + " &8(есть 1-" + groupCount + ")"
-                        : "&cВ группе нет способности " + number + " &8(есть 1-" + abilityCount + ")");
+                        ? "&cThere is no group " + number + " &8(available: 1-" + groupCount + ")"
+                        : "&cThis group has no ability " + number + " &8(available: 1-" + abilityCount + ")");
                 WorldFx.sound(plugin, p.getLocation(), "minecraft:block.note_block.bass", 0.5f, 0.8f);
                 return;
             }
@@ -274,7 +274,7 @@ public final class UserManager {
         HydroUser u = user(p);
         u.setCurrentGroup(Selection.NO_GROUP);
         u.setSelected(null);
-        Msg.actionBar(p, "&7Сброс — выбери &eгруппу 1-" + plugin.forms().groupCount());
+        Msg.actionBar(p, "&7Reset — select a &egroup from 1-" + plugin.forms().groupCount());
         WorldFx.sound(plugin, p.getLocation(), "minecraft:block.note_block.bass", 0.7f, 0.8f);
         updateHud(u, p);
         updateBar(u, p);
@@ -315,7 +315,7 @@ public final class UserManager {
     /** Shared gate for anything that would add display entities. Refuses out loud, never silently. */
     private boolean budgetOk(Player p, int displays) {
         if (plugin.animator().hasRoom(p.getUniqueId(), displays)) return true;
-        Msg.actionBar(p, "&cСлишком много воды в игре — подожди секунду");
+        Msg.actionBar(p, "&cThere is too much active water — wait a moment");
         WorldFx.sound(plugin, p.getLocation(), "minecraft:block.fire.extinguish", 0.5f, 1.2f);
         return false;
     }
@@ -329,7 +329,7 @@ public final class UserManager {
         if (u.hasOrb()) {
             WaterOrb orb = u.getOrb();
             if (orb.isFull()) {
-                Msg.actionBar(p, "&bШар воды уже полный");
+                Msg.actionBar(p, "&bThe water orb is already full");
                 return;
             }
             int missing = cfg.maxBlocks - orb.blockCount();
@@ -341,13 +341,13 @@ public final class UserManager {
             }
             List<Location> sky = skyWater(p, att, missing - more.size());
             if (more.isEmpty() && sky.isEmpty()) {
-                Msg.actionBar(p, "&7Рядом больше нет воды для дозабора");
+                Msg.actionBar(p, "&7There is no more nearby water to collect");
                 return;
             }
             if (cfg.drainSource) WaterCollector.drain(plugin, more);
             orb.topUp(more, sky);
             int pctNow = (int) Math.round(Math.min(1.0, orb.blockCount() / (double) cfg.maxBlocks) * 100);
-            Msg.actionBar(p, "&bДозабор воды... &7(" + orb.blockCount() + " • " + pctNow + "%) "
+            Msg.actionBar(p, "&bCollecting more water... &7(" + orb.blockCount() + " • " + pctNow + "%) "
                     + att.display());
             return;
         }
@@ -360,7 +360,7 @@ public final class UserManager {
         List<Location> sky = skyWater(p, att, cfg.maxBlocks - sources.size());
         int total = sources.size() + sky.size();
         if (total < cfg.minBlocks) {
-            Msg.actionBar(p, "&cРядом слишком мало воды &8(" + att.display() + "&8)");
+            Msg.actionBar(p, "&cThere is not enough nearby water &8(" + att.display() + "&8)");
             WorldFx.sound(plugin, p.getLocation(), "minecraft:block.fire.extinguish", 0.6f, 1.6f);
             return;
         }
@@ -379,7 +379,7 @@ public final class UserManager {
         }
         WaterForm f = u.getSelected();
         int pct = (int) Math.round(Math.min(1.0, total / (double) cfg.maxBlocks) * 100);
-        Msg.actionBar(p, "&bВода поднимается... &7(" + total + " • " + pct + "%) &8| "
+        Msg.actionBar(p, "&bThe water is rising... &7(" + total + " • " + pct + "%) &8| "
                 + (f != null ? f.name() : "") + " &8| " + att.display());
     }
 
@@ -401,14 +401,14 @@ public final class UserManager {
         WaterForm form = u.getSelected();
         if (form == null) {
             Msg.actionBar(p, u.getCurrentGroup() == Selection.NO_GROUP
-                    ? "&7Выбери &eгруппу 1-" + plugin.forms().groupCount() + "&7, затем способность"
-                    : "&7Группа выбрана — теперь жми &eцифру способности");
+                    ? "&7Select a &egroup from 1-" + plugin.forms().groupCount() + "&7, then an ability"
+                    : "&7Group selected — now press an &eability number");
             return;
         }
-        // Bending from inside a tank, a helicopter or a train is undefined at best — Прибой would
+        // Bending from inside a tank, a helicopter or a train is undefined at best — Surf would
         // start driving a passenger's velocity — and this server has a garage full of them.
         if (p.getVehicle() != null) {
-            Msg.actionBar(p, "&7Из техники бендить нельзя");
+            Msg.actionBar(p, "&7You cannot bend while riding a vehicle");
             return;
         }
 
@@ -422,19 +422,19 @@ public final class UserManager {
             return;
         }
         if (form.awakeningOnly() && !u.isAwakening()) {
-            Msg.actionBar(p, "&cСпособность только в Авакенинге");
+            Msg.actionBar(p, "&cThis ability is only available during Awakening");
             return;
         }
         if (form.needsEntityTarget() && Targeting.targetEntity(p, 30) == null) {
-            Msg.actionBar(p, "&7Нужна цель — наведись на моба или игрока");
+            Msg.actionBar(p, "&7A target is required — aim at a mob or player");
             return;
         }
         if (form.id().equals("part") && PartWaterEffect.activeFor(p.getUniqueId()) >= PartWaterEffect.MAX_ACTIVE) {
-            Msg.actionBar(p, "&7Уже активно " + PartWaterEffect.MAX_ACTIVE + " «Расступись»");
+            Msg.actionBar(p, "&7You already have " + PartWaterEffect.MAX_ACTIVE + " active Part the Waters effects");
             return;
         }
         if (form.id().equals("barrier") && BarrierEffect.isActive(p.getUniqueId())) {
-            Msg.actionBar(p, "&7Барьер уже держится");
+            Msg.actionBar(p, "&7The barrier is already active");
             return;
         }
 
@@ -443,15 +443,15 @@ public final class UserManager {
 
         long cdRemain = form.cooldownTicks() - (now - u.getFormUse(form.id()));
         if (cdRemain > 0) {
-            Msg.actionBar(p, form.name() + " &cна перезарядке: "
-                    + String.format("%.1f", cdRemain / 20.0) + "с");
+            Msg.actionBar(p, form.name() + " &cis on cooldown: "
+                    + String.format("%.1f", cdRemain / 20.0) + "s");
             WorldFx.sound(plugin, p.getLocation(), "minecraft:block.note_block.bass", 0.5f, 0.8f);
             return;
         }
 
         double cost = costOf(u, form, att);
         if (u.getStamina() < cost) {
-            Msg.actionBar(p, "&cМало стамины &8(" + (int) u.getStamina() + "/" + (int) cost + ")");
+            Msg.actionBar(p, "&cNot enough stamina &8(" + (int) u.getStamina() + "/" + (int) cost + ")");
             WorldFx.sound(plugin, p.getLocation(), "minecraft:block.fire.extinguish", 0.5f, 1.4f);
             return;
         }
@@ -465,7 +465,7 @@ public final class UserManager {
         if (form.id().equals("dash")) {
             if (!WaterCollector.anySourceNear(p, 8)) {
                 if (!u.hasOrb()) {
-                    Msg.actionBar(p, "&cНет воды рядом");
+                    Msg.actionBar(p, "&cThere is no water nearby");
                     return;
                 }
                 u.getOrb().consumePartial(Math.max(6, cfg().maxBlocks / 3 + 1));
@@ -475,7 +475,7 @@ public final class UserManager {
             boolean ground = WaterCollector.anySourceNear(p, 8);
             boolean orbReady = u.hasOrb() && u.getOrb().isReady();
             if (!ground && !orbReady) {
-                Msg.actionBar(p, "&cНет воды рядом");
+                Msg.actionBar(p, "&cThere is no water nearby");
                 return;
             }
             if (!ground && orbReady) {
@@ -486,12 +486,12 @@ public final class UserManager {
 
         if (form.requiresWater()) {
             if (!u.hasOrb()) {
-                Msg.actionBar(p, "&7Сначала набери воду — &bПКМ");
+                Msg.actionBar(p, "&7Collect water first — &bright-click");
                 return;
             }
             WaterOrb orb = u.getOrb();
             if (!orb.isReady()) {
-                Msg.actionBar(p, "&7Шар ещё формируется...");
+                Msg.actionBar(p, "&7The orb is still forming...");
                 return;
             }
             FormContext ctx = new FormContext(plugin, p, orb.center(), orb.blockCount(), att, u.isAwakening());
@@ -510,13 +510,13 @@ public final class UserManager {
             Msg.actionBar(p, form.name() + " &7— " + chargeLabel(ctx));
         } else {
             FormContext ctx = new FormContext(plugin, p, p.getEyeLocation(), cfg().maxBlocks / 2, att, u.isAwakening());
-            // "Расступись" charges nothing if there was no water to part — including when a claim
+            // "Part the Waters" charges nothing if there was no water to part — including when a claim
             // vetoed the whole corridor, which used to bill the caster for a no-op.
             if (form.id().equals("part")) {
                 PartWaterEffect eff = new PartWaterEffect(plugin, p, 60, 2, 5, 10, 300);
                 if (!eff.opened()) {
                     eff.cleanup();
-                    Msg.actionBar(p, "&7Здесь нечего раздвигать");
+                    Msg.actionBar(p, "&7There is no water here to part");
                     return;
                 }
                 plugin.animator().add(eff);
@@ -529,16 +529,16 @@ public final class UserManager {
             }
             spend(u, cost, now);
             u.setFormUse(form.id(), now);
-            Msg.actionBar(p, form.name() + " &7— активирована!");
+            Msg.actionBar(p, form.name() + " &7— activated!");
         }
         updateBar(u, p);
     }
 
     private String chargeLabel(FormContext ctx) {
         return switch (ctx.charge) {
-            case LIGHT -> "&fлёгкая форма";
-            case MEDIUM -> "выпущена!";
-            case HEAVY -> "&b&lПОЛНАЯ МОЩЬ";
+            case LIGHT -> "&flight form";
+            case MEDIUM -> "cast!";
+            case HEAVY -> "&b&lFULL POWER";
         };
     }
 
@@ -550,11 +550,11 @@ public final class UserManager {
     private void handleNuke(Player p, HydroUser u) {
         AquaConfig cfg = cfg();
         if (!cfg.nukeEnabled) {
-            Msg.actionBar(p, "&cУльта отключена на сервере");
+            Msg.actionBar(p, "&cThe ultimate ability is disabled on this server");
             return;
         }
         if (!u.isAwakening()) {
-            Msg.actionBar(p, "&cАква-Армагеддон — только в Авакенинге");
+            Msg.actionBar(p, "&cAqua Armageddon is only available during Awakening");
             return;
         }
         if (u.getArmedNuke() != null) {
@@ -564,32 +564,32 @@ public final class UserManager {
                 u.setArmedNuke(null);
                 u.setStamina(0);
                 u.setNukeReadyTick(now() + cfg.nukeCooldownSeconds * 20L);
-                Msg.send(p, cfg.prefix, "&4&lЯДЕРНЫЙ УДАР!");
+                Msg.send(p, cfg.prefix, "&4&lNUCLEAR STRIKE!");
             } else {
-                Msg.actionBar(p, "&7Заряд ещё собирается...");
+                Msg.actionBar(p, "&7The charge is still building...");
             }
             return;
         }
         long left = u.getNukeReadyTick() - now();
         if (left > 0) {
-            Msg.actionBar(p, "&cПерезарядка: " + (left / 20) + "с");
+            Msg.actionBar(p, "&cCooldown: " + (left / 20) + "s");
             return;
         }
         if (u.getStamina() < cfg.staminaMax - 0.5) {
-            Msg.actionBar(p, "&cНужна ПОЛНАЯ стамина для Армагеддона");
+            Msg.actionBar(p, "&cAqua Armageddon requires FULL stamina");
             return;
         }
         if (!budgetOk(p, 300)) return;
         NukeEffect ne = new NukeEffect(plugin, p);
         plugin.animator().add(ne);
         u.setArmedNuke(ne);
-        Msg.send(p, cfg.prefix, "&4Аква-Армагеддон заряжается... &7кликни ещё раз, чтобы сбросить.");
+        Msg.send(p, cfg.prefix, "&4Aqua Armageddon is charging... &7click again to unleash it.");
     }
 
     /** Admin/testing: force-enter awakening with full stamina. */
     public void debugAwaken(Player p) {
         if (!isPowered(p)) {
-            Msg.send(p, cfg().prefix, "&7Сила выдана автоматически для теста Авакенинга.");
+            Msg.send(p, cfg().prefix, "&7Powers were granted automatically for Awakening testing.");
             grant(p, true);
         }
         HydroUser u = user(p);
@@ -604,7 +604,7 @@ public final class UserManager {
         if (u != null && u.hasOrb()) {
             u.getOrb().disperse();
             u.setOrb(null);
-            Msg.actionBar(p, "&7Шар воды развеян");
+            Msg.actionBar(p, "&7The water orb was dispersed");
         }
     }
 
@@ -677,8 +677,8 @@ public final class UserManager {
         Attunement before = u.getAttunement();
         u.setAttunement(a, now);
         if (before != a && isStance(p)) {
-            Msg.actionBar(p, "&7Стихия: " + a.display() + " &8(&7стоимость ×"
-                    + String.format("%.2f", a.costMult) + "&8, &7мощь ×"
+            Msg.actionBar(p, "&7Attunement: " + a.display() + " &8(&7cost ×"
+                    + String.format("%.2f", a.costMult) + "&8, &7power ×"
                     + String.format("%.2f", a.powerMult) + "&8)");
         }
         return a;
@@ -701,7 +701,7 @@ public final class UserManager {
 
     private void enterAwakening(HydroUser u, Player p) {
         u.setAwakening(true);
-        p.sendTitle(Msg.color("&b&lА В А К Е Н И Н Г"), Msg.color("&3Сила воды пробудилась"), 8, 40, 12);
+        p.sendTitle(Msg.color("&b&lA W A K E N I N G"), Msg.color("&3The power of water has awakened"), 8, 40, 12);
         WorldFx.spray(plugin, p.getLocation().add(0, 1, 0), 50);
         WorldFx.skin(plugin, p.getLocation().add(0, 1.2, 0), 2.5, 40);
         for (int r = 1; r <= 4; r++) WorldFx.shockwave(plugin, p.getLocation(), r * 1.6, 30);
@@ -712,7 +712,7 @@ public final class UserManager {
     private void exitAwakening(HydroUser u, Player p) {
         u.setAwakening(false);
         clearArmedNuke(p);
-        Msg.actionBar(p, "&7Авакенинг угас.");
+        Msg.actionBar(p, "&7Awakening has faded.");
         WorldFx.steam(plugin, p.getLocation().add(0, 1, 0), 20);
     }
 
@@ -730,16 +730,16 @@ public final class UserManager {
         bar.setProgress(pct);
         String sel = u.getSelected() != null ? u.getSelected().name() : "&7—";
         String orb = u.hasOrb()
-                ? " &8| &bШар " + (int) Math.round(100.0 * u.getOrb().blockCount() / cfg.maxBlocks) + "%"
+                ? " &8| &bOrb " + (int) Math.round(100.0 * u.getOrb().blockCount() / cfg.maxBlocks) + "%"
                 : "";
         if (u.isAwakening()) {
             bar.setColor(BarColor.RED);
-            bar.setTitle(Msg.color("&c⚡ АВАКЕНИНГ &8| " + sel + " &8| &fСтам " + (int) (pct * 100)
-                    + "% &8| &cЗаряд " + (int) u.getAwakeningCharge() + orb));
+            bar.setTitle(Msg.color("&c⚡ AWAKENING &8| " + sel + " &8| &fStamina " + (int) (pct * 100)
+                    + "% &8| &cCharge " + (int) u.getAwakeningCharge() + orb));
         } else {
             bar.setColor(pct < 0.3 ? BarColor.YELLOW : BarColor.BLUE);
             int aw = (int) Math.round(u.getAwakeningCharge() / Math.max(1, cfg.awakeningThreshold) * 100);
-            bar.setTitle(Msg.color(sel + " &8| &fСтамина " + (int) (pct * 100) + "% &8| &7Ав " + aw + "%" + orb));
+            bar.setTitle(Msg.color(sel + " &8| &fStamina " + (int) (pct * 100) + "% &8| &7Awakening " + aw + "%" + orb));
         }
     }
 
@@ -785,34 +785,34 @@ public final class UserManager {
 
         List<String> lines = new ArrayList<>(16);
         lines.add(g == null
-                ? "&fГруппа: &7— &8(жми 1-" + plugin.forms().groupCount() + ")"
-                : "&fГруппа &8[" + (u.getCurrentGroup() + 1) + "] " + g.color() + g.name());
+                ? "&fGroup: &7— &8(press 1-" + plugin.forms().groupCount() + ")"
+                : "&fGroup &8[" + (u.getCurrentGroup() + 1) + "] " + g.color() + g.name());
         if (g != null) {
             for (int i = 0; i < g.size(); i++) {
                 WaterForm f = g.get(i);
                 boolean active = f == sel;
                 long rem = f.cooldownTicks() - (now - u.getFormUse(f.id()));
-                String tail = rem > 0 ? " &c" + (long) Math.ceil(rem / 20.0) + "с" : "";
+                String tail = rem > 0 ? " &c" + (long) Math.ceil(rem / 20.0) + "s" : "";
                 lines.add((active ? "&f▸&e" : "&8 ") + (i + 1) + " "
                         + (active ? f.name() : "&7" + ChatColor.stripColor(Msg.color(f.name()))) + tail);
             }
         }
         lines.add("&8&m-------------");
-        lines.add("&fСтамина: &b" + (int) (pct * 100) + "%"
+        lines.add("&fStamina: &b" + (int) (pct * 100) + "%"
                 + (sel != null ? " &8(-" + (int) costOf(u, sel) + ")" : ""));
-        lines.add("&fШар: " + (u.hasOrb()
+        lines.add("&fOrb: " + (u.hasOrb()
                 ? "&b" + (int) Math.round(100.0 * u.getOrb().blockCount() / cfg.maxBlocks) + "%"
                         + (u.getOrb().isReady() ? " &a✓" : " &7…")
-                : "&7пусто"));
-        if (cfg.environmentEnabled) lines.add("&fСтихия: " + u.getAttunement().display());
+                : "&7empty"));
+        if (cfg.environmentEnabled) lines.add("&fAttunement: " + u.getAttunement().display());
         if (u.isAwakening()) {
-            lines.add("&c⚡ Авакенинг " + (int) u.getAwakeningCharge());
+            lines.add("&c⚡ Awakening " + (int) u.getAwakeningCharge());
         } else {
             int aw = (int) Math.round(u.getAwakeningCharge() / Math.max(1, cfg.awakeningThreshold) * 100);
-            lines.add("&7Заряд: " + aw + "%");
+            lines.add("&7Charge: " + aw + "%");
         }
         if (sel != null && sel.needsEntityTarget()) {
-            lines.add("&fЦель: " + (aimed == null ? "&c— нет" : "&a" + describe(aimed)));
+            lines.add("&fTarget: " + (aimed == null ? "&c— none" : "&a" + describe(aimed)));
         }
 
         // Rebuilding the sidebar means a remove packet and an add packet per line, every second, for
@@ -834,7 +834,7 @@ public final class UserManager {
         if (obj == null) {
             obj = board.getObjective("aquahud");
             if (obj == null) {
-                obj = board.registerNewObjective("aquahud", Criteria.DUMMY, Msg.color("&b&l⊙ Вода"));
+                obj = board.registerNewObjective("aquahud", Criteria.DUMMY, Msg.color("&b&l⊙ Water"));
             }
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
             u.setHud(obj);

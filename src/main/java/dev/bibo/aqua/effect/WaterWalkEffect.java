@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * "Водная Поступь" — temporarily freezes a small platform of water under the caster so they can walk
+ * "Water Walk" — temporarily freezes a small platform of water under the caster so they can walk
  * on it.
  *
  * <p>The ice now goes through the borrowed-state contract, which fixes two things at once: it is the
