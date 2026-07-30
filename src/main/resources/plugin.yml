@@ -4,7 +4,7 @@ main: dev.bibo.aqua.AquaWaterPlugin
 api-version: '1.21'
 author: bibo
 description: Water-bending abilities granted by Holy Water — 23 abilities, stamina, environment attunement and an ultimate.
-website: https://github.com/bibo/AquaPowers
+website: https://github.com/Omny-1/AquaPowers
 folia-supported: false
 
 commands:
